@@ -11,7 +11,7 @@ struct Student {
   double average{0};
 
   friend ostream &operator<<(ostream &os, const Student &student) {
-    os << student.id << " " << student.name << " " << setprecision(2)
+    os << student.id << " " << student.name << " " << setprecision(4)
        << student.score[0] << " " << student.score[1] << " " << student.score[2]
        << " " << student.average << '\n';
 
@@ -39,7 +39,7 @@ public:
   }
   ~List() { clear(); }
 
-  bool empty() const { return (first == last); }
+  bool empty() const { return (first->next = nullptr); }
 
   void push_back(const Student &student) {
     push_after(student, last);
@@ -77,12 +77,14 @@ public:
 
 protected:
   void clear() {
-    while (not empty()) {
+    while (first->next != nullptr) {
       Node *temp = first->next;
       first->next = temp->next;
       delete temp;
     }
     delete first;
+    first = nullptr;
+    last = nullptr;
   }
 
   void copyFrom(const List &src) {
@@ -109,21 +111,27 @@ private:
 
 int main() {
 
-  int numStudents{};
-  cin >> numStudents;
-  List students;
+  // int numStudents{};
+  // cin >> numStudents;
+  List students{};
 
-  for (int i = 0; i < numStudents; i++) {
-    Student student{};
-    cin >> student.id >> student.name >> student.score[0] >> student.score[1] >>
-        student.score[2];
-    for (const auto &score : student.score) {
-      student.average += score;
-    }
-    student.average /= 3;
+  Student student{1, "stx", {54, 23, 89}, 53};
+  Student student3{1, "stx", {54, 23, 89}, 52};
+  Student student2{1, "stx", {54, 23, 89}, 53};
 
-    students.decreOrderInsert(student);
-  }
+  /*  for (int i = 0; i < numStudents; i++) {
+      Student student{};
+      cin >> student.id >> student.name >> student.score[0] >> student.score[1]
+     >> student.score[2]; for (const auto &score : student.score) {
+        student.average += score;
+      }
+      student.average /= 3;
+
+  */
+  students.decreOrderInsert(student3);
+  students.decreOrderInsert(student);
+  students.decreOrderInsert(student2);
+  //}
 
   cout << students;
 }
