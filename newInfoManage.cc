@@ -13,7 +13,7 @@ struct Student {
   friend ostream &operator<<(ostream &os, const Student &student) {
     os << student.id << " " << student.name << " " << fixed << setprecision(2)
        << student.score[0] << " " << student.score[1] << " " << student.score[2]
-       << " " << student.average << '\n';
+       << " " << student.average;
 
     return os;
   }
@@ -75,8 +75,9 @@ public:
 
   friend ostream &operator<<(ostream &os, const List &list) {
     Link temp = list.first;
+    int i = 1;
     while ((temp = temp->next) != nullptr) {
-      os << temp->student;
+      os << temp->student << " " << i++ << '\n';
     }
     return os;
   }
