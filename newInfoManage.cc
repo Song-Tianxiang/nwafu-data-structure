@@ -42,14 +42,7 @@ public:
     delete first;
   }
 
-  bool empty() const { return (first->next = nullptr); }
-
-  void push_after(const Student &student, Node *after) {
-    Node *temp = after->next;
-    after->next = new Node;
-    after->next->student = student;
-    after->next->next = temp;
-  }
+  bool empty() const { return (first->next == nullptr); }
 
   void decreOrderInsert(const Student &student) {
     Link current_front = first;
