@@ -32,35 +32,26 @@ struct Cell {
   }
 };
 
-void step(Maze &&maze, Cells &&cells) {
-  auto top = cells.back();
+void step(Maze&& maze, Cells&& cells) {
+  auto& top = cells.back();
 
   Cell currentCell{};
   switch (top.direction) {
   case Cell::Down:
-    if (currentCell.coordinates.first + 1 < maze.size()) {
       currentCell = {{top.coordinates.first + 1, top.coordinates.second}};
       break;
-    }
   case Cell::Left:
-    if (currentCell.coordinates.second - 1 < maze[0].size()) {
       currentCell = {{top.coordinates.first, top.coordinates.second - 1}};
       break;
-    }
   case Cell::Up:
-    if (currentCell.coordinates.first - 1 < maze.size()) {
       currentCell = {{top.coordinates.first - 1, top.coordinates.second}};
       break;
-    }
   case Cell::Right:
-    if (currentCell.coordinates.second+1 < maze[0].size()) {
       currentCell = {{top.coordinates.first, top.coordinates.second + 1}};
       break;
-    }
   default:
     cells.pop_back();
     step(std::move(maze), std::move(cells));
-    return;
   }
 
   switch (auto [row, col] = currentCell.coordinates; maze[row][col]) {
@@ -74,7 +65,9 @@ void step(Maze &&maze, Cells &&cells) {
     top.direction = static_cast<Cell::Direction>(top.direction + 1);
     break;
   case 0:
+    top.direction = static_cast<Cell::Direction>(top.direction + 1);
     cells.push_back(currentCell);
+    maze[row][col] = 1;
     break;
   }
   step(std::move(maze), std::move(cells));
@@ -97,6 +90,8 @@ int main() {
 
   Cells cells{};
 
+  cells.push_back(Cell {start});
+  maze[start.first][start.second] = 1;
   step(std::move(maze), std::move(cells));
 
   return 0;
