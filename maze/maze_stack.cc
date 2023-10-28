@@ -1,7 +1,7 @@
 #include <cstddef> // size_t
-#include <cstdlib>
+#include <cstdlib> // exit
 #include <iostream>
-#include <utility> // pair
+#include <utility> // pair, move
 #include <vector>
 
 using std::cin;
@@ -32,23 +32,23 @@ struct Cell {
   }
 };
 
-void step(Maze&& maze, Cells&& cells) {
-  auto& top = cells.back();
+void step(Maze &&maze, Cells &&cells) {
+  auto &top = cells.back();
 
   Cell currentCell{};
   switch (top.direction) {
   case Cell::Down:
-      currentCell = {{top.coordinates.first + 1, top.coordinates.second}};
-      break;
+    currentCell = {{top.coordinates.first + 1, top.coordinates.second}};
+    break;
   case Cell::Left:
-      currentCell = {{top.coordinates.first, top.coordinates.second - 1}};
-      break;
+    currentCell = {{top.coordinates.first, top.coordinates.second - 1}};
+    break;
   case Cell::Up:
-      currentCell = {{top.coordinates.first - 1, top.coordinates.second}};
-      break;
+    currentCell = {{top.coordinates.first - 1, top.coordinates.second}};
+    break;
   case Cell::Right:
-      currentCell = {{top.coordinates.first, top.coordinates.second + 1}};
-      break;
+    currentCell = {{top.coordinates.first, top.coordinates.second + 1}};
+    break;
   default:
     cells.pop_back();
     step(std::move(maze), std::move(cells));
@@ -90,7 +90,7 @@ int main() {
 
   Cells cells{};
 
-  cells.push_back(Cell {start});
+  cells.push_back(Cell{start});
   maze[start.first][start.second] = 1;
   step(std::move(maze), std::move(cells));
 
